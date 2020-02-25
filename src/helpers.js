@@ -1,5 +1,5 @@
-function randomIdx(max){
+function generateRandomIdx(max){
   return Math.floor(Math.random() * max);
 }
 
-export {randomIdx}
+export {generateRandomIdx}
