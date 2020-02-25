@@ -2,22 +2,66 @@ import React, { useState } from 'react';
 import './EightBall.css'
 import { generateRandomIdx } from "./helpers"
 
-function EightBall(props) {
-  const [msg, setMsg] = useState("Think of a Question");
-  const [color, setColor] = useState("black");
+const defaultMsg = "Think of a Question";
+const defaultColor = "black";
 
-  function handleClick() {
+
+function EightBall(props) {
+  const [msg, setMsg] = useState(defaultMsg);
+  const [color, setColor] = useState(defaultColor);
+  const [counterObj, setCounterObj] = useState({redCounter: 0, greenCounter: 0, goldenrodCounter: 0});
+  // const [redCounter, setRedCounter] = useState(0);
+  // const [greenCounter, setGreenCounter] = useState(0);
+  // const [goldenrodCounter, setGoldenrodCounter] = useState(0);
+
+  function handleBallClick() {
     let answerIdx = generateRandomIdx(props.answers.length);
     let { msg, color } = props.answers[answerIdx];
+    if (color === "red") {
+      // setRedCounter(redCounter + 1);
+      setCounterObj({
+        redCounter: (counterObj.redCounter + 1),
+        greenCounter: counterObj.greenCounter,
+        goldenrodCounter: counterObj.goldenrodCounter
+      });
+    } else if (color === "green") {
+      // setGreenCounter(greenCounter + 1);
+      setCounterObj({redCounter: counterObj.redCounter, greenCounter: (counterObj.greenCounter + 1), goldenrodCounter: counterObj.goldenrodCounter});
 
+    } else if (color === "goldenrod") {
+      // setGoldenrodCounter(goldenrodCounter + 1);
+      setCounterObj({redCounter: counterObj.redCounter, greenCounter: counterObj.greenCounter, goldenrodCounter: (counterObj.goldenrodCounter + 1)});
+
+    }
     setMsg(msg);
     setColor(color);
+    console.log(setCounterObj);
+  }
+
+  function handleResetClick() {
+    setMsg(defaultMsg);
+    setColor(defaultColor);
+    setCounterObj({redCounter: 0, greenCounter: 0, goldenrodCounter: 0});
+    // setRedCounter(0);
+    // setGreenCounter(0);
+    // setGoldenrodCounter(0);
   }
 
   return (
-    <div className="EightBall" onClick={ handleClick } style={ {backgroundColor: color} }>
-      <p className="EightBall-msg">{ msg }</p>
+    <div>
+      <div className="EightBall" onClick={ handleBallClick } style={ {backgroundColor: color} }>
+        <p className="EightBall-msg">{ msg }</p>
+      </div>
+      <button className="EightBall-reset"onClick={ handleResetClick }>Reset</button>
+      <div className="EightBall-counters">
+        <div>Red Count: { counterObj.redCounter }</div>
+        <div>Green Count: { counterObj.greenCounter }</div>
+        <div>Goldenrod Count: { counterObj.goldenrodCounter }</div>
+      </div>
+      {/* <EightBall buttonHandler={ handleBallClick } /> */}
+
     </div>
+
   )
 }
 
